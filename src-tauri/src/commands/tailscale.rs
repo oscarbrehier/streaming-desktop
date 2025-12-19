@@ -1,3 +1,4 @@
+use crate::core::tailscale;
 use crate::utils::download::download_file;
 use std::process::Command;
 use tauri::{async_runtime, AppHandle};
@@ -35,6 +36,18 @@ pub async fn install_tailscale(app: AppHandle) -> Result<(), String> {
 
         Ok(())
     })
-	.await
-	.map_err(|e| e.to_string())?
+    .await
+    .map_err(|e| e.to_string())?
+}
+
+#[tauri::command]
+pub async fn get_tailscale_status() -> Result<String, String> {
+    let status = tauri::async_runtime::spawn_blocking(|| -> Result<String, String> {
+        let status = tailscale::tailscale_status()?;
+        Ok(status.backend_state().to_string())
+    })
+    .await
+    .map_err(|e| e.to_string())??;
+
+    Ok(status)
 }

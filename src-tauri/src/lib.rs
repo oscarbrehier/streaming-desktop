@@ -1,6 +1,7 @@
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 mod commands;
 mod utils;
+mod core;
 
 pub fn run() {
     tauri::Builder::default()
@@ -17,6 +18,8 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             commands::tailscale::install_tailscale,
             commands::setup::setup_environment,
+            commands::tailscale::get_tailscale_status,
+            commands::agent::start_agent
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

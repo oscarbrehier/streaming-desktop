@@ -8,6 +8,24 @@ async function setupEnvironment() {
     console.log("setup failed", err);
   }
 }
+
+async function getTailscaleStatus() {
+  try {
+    const res = await invoke("get_tailscale_status");
+    console.log(res);
+  } catch (err) {
+    console.log("setup failed", err);
+  }
+}
+
+async function startAgent() {
+  try {
+    const res = await invoke("start_agent");
+    console.log(res);
+  } catch (err) {
+    console.log("setup failed", err);
+  }
+}
 </script>
 
 <template>
@@ -20,17 +38,21 @@ async function setupEnvironment() {
       </p>
     </div>
 
-    <button @click="setupEnvironment">
-      start installation
-    </button>
+    <button class="my-4 w-full" @click="setupEnvironment">Start Installation</button>
+    <button class="my-4 w-full" @click="getTailscaleStatus">Tailscale Status</button>
+    <button class="my-4 w-full" @click="startAgent">Start Agent</button>
 
     <div class="space-y-2">
-      <div class="px-4 py-2 bg-neutral-50 rounded-lg flex items-center space-x-4">
-        <div class="size-4 rounded-full ring-2 ring-black ring-offset-1"></div>
+      <div
+        class="px-4 py-2 bg-neutral-50 dark:bg-neutral-600 rounded-lg flex items-center space-x-4"
+      >
+        <div
+          class="size-4 rounded-full ring-2 ring-black ring-offset-1 ring-offset-neutral-50 dark:ring-offset-neutral-600"
+        ></div>
         <p>Downloading VPN</p>
       </div>
 
-      <div class="px-4 py-2 bg-neutral-50 rounded-lg flex items-center space-x-4">
+      <!-- <div class="px-4 py-2 bg-neutral-50 rounded-lg flex items-center space-x-4">
         <div class="size-4 rounded-full ring-2 ring-black ring-offset-1"></div>
         <p>Initializing VPN</p>
       </div>
@@ -43,7 +65,7 @@ async function setupEnvironment() {
       <div class="px-4 py-2 bg-neutral-50 rounded-lg flex items-center space-x-4">
         <div class="size-4 rounded-full ring-2 ring-black ring-offset-1"></div>
         <p>Starting service</p>
-      </div>
+      </div> -->
     </div>
   </div>
 
