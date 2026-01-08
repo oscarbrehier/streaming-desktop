@@ -1,24 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { cn } from "../utils/cn";
-import { isVpsActive } from "../services/tauri/vps";
-import { isAgentRunning } from "../services/tauri/agent";
+import { useConnectionStore } from "../stores/connection";
 
-const vpsConnected = ref(false);
-const agentRunning = ref(false);
+const connection = useConnectionStore();
 
-async function checkVpsConnection() {
-  const res = await isVpsActive();
-  console.log(res);
-  vpsConnected.value = res;
-}
-
-async function checkAgentConnection() {
-  agentRunning.value = await isAgentRunning();
-}
-
-setInterval(checkVpsConnection, 5000);
-setInterval(checkAgentConnection, 5000);
 </script>
 
 <template>
@@ -30,7 +15,7 @@ setInterval(checkAgentConnection, 5000);
         :class="
           cn(
             'size-2 rounded-full ring-2 ring-offset-1 ring-offset-neutral-50 dark:ring-offset-neutral-600',
-            vpsConnected
+            connection.vpsConnected
               ? 'ring-green-200 bg-green-500 animate-pulse'
               : 'ring-red-200 bg-red-500 animate-pulse'
           )
@@ -44,7 +29,7 @@ setInterval(checkAgentConnection, 5000);
         :class="
           cn(
             'size-2 rounded-full ring-2 ring-offset-1 ring-offset-neutral-50 dark:ring-offset-neutral-600',
-            agentRunning
+            connection.backendRunning
               ? 'ring-green-200 bg-green-500 animate-pulse'
               : 'ring-red-200 bg-red-500 animate-pulse'
           )

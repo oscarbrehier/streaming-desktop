@@ -4,6 +4,9 @@ import InstallationItem from "./components/InstallationItem.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import { listen } from "@tauri-apps/api/event";
 import StatusBar from "./components/StatusBar.vue";
+import { useConnectionStore } from "./stores/connection";
+import { RefreshCcw } from "lucide-vue-next";
+import Button from "./components/Button.vue";
 
 type StepStatus = "pending" | "running" | "success";
 
@@ -13,6 +16,13 @@ type Step = {
   status: StepStatus;
   message: string;
 };
+
+const connection = useConnectionStore();
+
+onMounted(() => {
+  connection.refreshStatus();
+  setInterval(connection.refreshStatus, 5000);
+});
 
 let unlisten: (() => void) | null = null;
 
@@ -49,14 +59,26 @@ async function startConnectionSetup() {
 <template>
   <div class="w-full max-w-md">
     <div class="mb-10">
-      <p class="text-2xl">Preparing your library</p>
-      <p class="text-sm text-neutral-400">
-        We’re getting everything ready so you can start streaming. This ensures your
-        connection is secure and all necessary services are running.
+      <p class="text-2xl mb-1">Getting ready to stream</p>
+      <p class="text-sm text-neutral-500">
+        We’re checking your connection and starting the services needed to stream your
+        library.
       </p>
     </div>
 
-    <button class="my-4 w-full" @click="startConnectionSetup">Connect & Stream</button>
+    <div class="w-full flex items-center space-x-2">
+      <Button
+        :disabled="connection.checking"
+        @click="startConnectionSetup"
+        :variant="connection.backendRunning ? 'danger' : 'primary'"
+        class="w-full"
+      >
+        {{ connection.backendRunning ? "Stop Streaming" : "Connect & Stream" }}
+      </Button>
+      <Button :disabled="connection.checking" size="icon" @click="startConnectionSetup">
+        <RefreshCcw :size="16" :stroke-width="2.5" />
+      </Button>
+    </div>
 
     <div class="space-y-2">
       <InstallationItem
