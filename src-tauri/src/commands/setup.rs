@@ -15,7 +15,7 @@ struct SetupProgress {
 }
 
 #[tauri::command]
-pub async fn run_setup(app: AppHandle, window: Window) -> Result<(), String> {
+pub async fn bootstrap_library(app: AppHandle, window: Window) -> Result<(), String> {
     window
         .emit(
             "setup-progress",

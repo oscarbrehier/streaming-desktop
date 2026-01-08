@@ -23,7 +23,7 @@ defineProps<{
             : 'ring-green-200 bg-green-500'
         )
       "
-    ></div>
+    />
 
     <div>
       <p>{{ title }}</p>

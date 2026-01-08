@@ -1,6 +1,8 @@
+use reqwest::Client;
 use serde::Deserialize;
 use tauri::AppHandle;
 use std::process::Command;
+use dotenv::dotenv;
 
 #[derive(Debug, Deserialize)]
 pub struct TailscaleStatus {
@@ -101,5 +103,21 @@ pub fn connect_to_network() -> Result<(), String> {
 	}
 
 	Ok(())
+
+}
+
+pub async fn check_vps_connection() -> bool {
+
+    dotenv().ok();
+
+    let base_path = std::env::var("STREAMING_APP_URL").unwrap_or("".to_string());
+    let url = format!("{}/api/health", base_path);
+
+    Client::new()
+        .get(url)
+        .send()
+        .await
+        .map(|resp| resp.status().is_success())
+        .unwrap_or(false)
 
 }

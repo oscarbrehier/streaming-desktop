@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import InstallationItem from "./components/InstallationItem.vue";
 import { onMounted, onUnmounted, ref } from "vue";
 import { listen } from "@tauri-apps/api/event";
+import StatusBar from "./components/StatusBar.vue";
 
 type StepStatus = "pending" | "running" | "success";
 
@@ -41,7 +42,7 @@ onUnmounted(() => {
 const steps = ref<Step[]>([]);
 
 async function startConnectionSetup() {
-  await invoke("run_setup");
+  await invoke("bootstrap_library");
 }
 </script>
 
@@ -67,4 +68,6 @@ async function startConnectionSetup() {
       />
     </div>
   </div>
+
+  <StatusBar />
 </template>

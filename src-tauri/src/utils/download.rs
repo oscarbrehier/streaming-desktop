@@ -1,5 +1,5 @@
 use std::{fs::File, io::{self, Read}, path::PathBuf};
-use tauri::{AppHandle, Manager}; // ← Manager needed for path()
+use tauri::{AppHandle, Manager};
 
 pub fn download_file(app: &AppHandle, url: &str, filename: &str) -> Result<PathBuf, String> {
 

@@ -15,3 +15,17 @@ export async function startAgent(): Promise<{ data?: any, error: string | null }
 	};
 
 };
+
+
+export async function isAgentRunning(): Promise<boolean> {
+
+	try {
+
+		const res = await invoke<boolean>("get_backend_status");
+		return res ?? false;
+
+	} catch (err) {
+		return false;
+	};
+
+};

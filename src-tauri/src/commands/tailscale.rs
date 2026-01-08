@@ -51,3 +51,8 @@ pub async fn get_tailscale_status() -> Result<String, String> {
 
     Ok(status)
 }
+
+#[tauri::command]
+pub async fn get_vps_status() -> Result<bool, String> {
+    Ok(tailscale::check_vps_connection().await)
+}
