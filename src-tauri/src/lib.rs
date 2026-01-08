@@ -17,6 +17,7 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             commands::tailscale::install_tailscale,
+            commands::setup::run_setup,
             commands::setup::setup_environment,
             commands::tailscale::get_tailscale_status,
             commands::agent::start_agent
