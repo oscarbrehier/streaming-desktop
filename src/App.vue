@@ -60,7 +60,7 @@ async function startConnectionSetup() {
   <div class="w-full max-w-md">
     <div class="mb-10">
       <p class="text-2xl mb-1">Getting ready to stream</p>
-      <p class="text-sm text-neutral-500">
+      <p class="text-sm text-neutral-500 dark:text-neutral-300">
         We’re checking your connection and starting the services needed to stream your
         library.
       </p>
@@ -68,14 +68,14 @@ async function startConnectionSetup() {
 
     <div class="w-full flex items-center space-x-2 my-4">
       <Button
-        :disabled="connection.checking"
+      
         @click="startConnectionSetup"
         :variant="connection.backendRunning ? 'danger' : 'primary'"
         class="w-full"
       >
         {{ connection.backendRunning ? "Stop Streaming" : "Connect & Stream" }}
       </Button>
-      <Button :disabled="connection.checking" size="icon" @click="startConnectionSetup">
+      <Button size="icon" @click="startConnectionSetup">
         <RefreshCcw :size="16" :stroke-width="2.5" />
       </Button>
     </div>

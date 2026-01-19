@@ -27,9 +27,30 @@ const baseClasses =
   "inline-flex items-center justify-center rounded-lg transition-colors disabled:pointer-events-none";
 
 const variantClasses: Record<Variant, string> = {
-  primary: "bg-neutral-100 hover:bg-neutral-200 disabled:text-neutral-300",
-  danger: "bg-neutral-100 text-red-600 disabled:text-red-200",
-  ghost: "bg-transparent text-neutral-700 hover:bg-neutral-100",
+  primary: `
+    bg-neutral-100 text-neutral-900
+    hover:bg-neutral-200
+    disabled:text-neutral-300 disabled:bg-neutral-100
+    dark:bg-neutral-800 dark:text-neutral-100
+    dark:hover:bg-neutral-700
+    dark:disabled:bg-neutral-800 dark:disabled:text-neutral-500
+  `,
+  danger: `
+    bg-neutral-100 text-red-600
+    hover:bg-red-50
+    disabled:text-red-200 disabled:bg-neutral-100
+    dark:bg-neutral-800 dark:text-red-400
+    dark:hover:bg-neutral-700
+    dark:disabled:text-red-700 dark:disabled:bg-neutral-800
+  `,
+  ghost: `
+    bg-transparent text-neutral-700
+    hover:bg-neutral-100
+    disabled:text-neutral-400
+    dark:text-neutral-300
+    dark:hover:bg-neutral-800
+    dark:disabled:text-neutral-600
+  `,
 };
 
 const sizeClasses: Record<Size, string> = {
