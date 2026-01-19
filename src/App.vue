@@ -66,7 +66,7 @@ async function startConnectionSetup() {
       </p>
     </div>
 
-    <div class="w-full flex items-center space-x-2">
+    <div class="w-full flex items-center space-x-2 my-4">
       <Button
         :disabled="connection.checking"
         @click="startConnectionSetup"
