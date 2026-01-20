@@ -54,6 +54,17 @@ const steps = ref<Step[]>([]);
 async function startConnectionSetup() {
   await invoke("bootstrap_library");
 }
+
+async function terminateConnection() {
+
+  try {
+    const success = await invoke("terminate_agent");
+    console.log(success);
+  } catch (err) {
+    console.error(err);
+  }
+
+}
 </script>
 
 <template>
@@ -69,13 +80,16 @@ async function startConnectionSetup() {
     <div class="w-full flex items-center space-x-2 my-4">
       <Button
       
-        @click="startConnectionSetup"
+        @click="connection.backendRunning ? terminateConnection() : startConnectionSetup()"
         :variant="connection.backendRunning ? 'danger' : 'primary'"
         class="w-full"
       >
         {{ connection.backendRunning ? "Stop Streaming" : "Connect & Stream" }}
       </Button>
       <Button size="icon" @click="startConnectionSetup">
+        <RefreshCcw :size="16" :stroke-width="2.5" />
+      </Button>
+      <Button size="icon" @click="terminateConnection">
         <RefreshCcw :size="16" :stroke-width="2.5" />
       </Button>
     </div>
