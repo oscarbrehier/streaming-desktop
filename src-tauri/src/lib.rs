@@ -8,11 +8,12 @@ use tauri::Manager;
 
 #[derive(Default)]
 struct AppState {
-    agent: Option<Child>
+    agent: Option<Child>,
 }
 
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             app.manage(Mutex::new(AppState::default()));
             if cfg!(debug_assertions) {
@@ -35,16 +36,14 @@ pub fn run() {
             commands::agent::get_backend_status,
         ])
         .on_window_event(|window, event| {
-
             if let tauri::WindowEvent::Destroyed = event {
                 let state = window.state::<Mutex<AppState>>();
                 let mut lock = state.lock().unwrap();
-                
+
                 if let Some(mut child) = lock.agent.take() {
                     let _ = child.kill();
                 }
             }
-
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

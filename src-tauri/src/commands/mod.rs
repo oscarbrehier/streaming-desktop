@@ -1,3 +1,3 @@
-pub mod tailscale;
-pub mod setup;
 pub mod agent;
+pub mod setup;
+pub mod tailscale;

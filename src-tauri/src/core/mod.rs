@@ -1,2 +1,2 @@
-pub mod tailscale;
 pub mod agent;
+pub mod tailscale;

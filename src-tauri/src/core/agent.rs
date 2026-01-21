@@ -41,9 +41,9 @@ pub fn spawn_agent(app: &AppHandle) -> Result<(), String> {
     let state_handle = app.state::<Mutex<AppState>>();
     let mut state = state_handle.lock().unwrap();
 
-	if let Some(mut old_child) = state.agent.take() {
-		let _ = old_child.kill();
-	}
+    if let Some(mut old_child) = state.agent.take() {
+        let _ = old_child.kill();
+    }
 
     state.agent = Some(child);
 
@@ -51,17 +51,15 @@ pub fn spawn_agent(app: &AppHandle) -> Result<(), String> {
 }
 
 pub fn kill_agent_process(app: &AppHandle) -> Result<(), String> {
+    let state_handle = app.state::<Mutex<AppState>>();
+    let mut state = state_handle.lock().unwrap();
 
-	let state_handle = app.state::<Mutex<AppState>>();
-	let mut state = state_handle.lock().unwrap();
+    if let Some(mut child) = state.agent.take() {
+        child.kill().map_err(|e| e.to_string())?;
+        let _ = child.wait();
+    } else {
+        return Err("No agent was running".to_string());
+    }
 
-	if let Some(mut child) = state.agent.take() {
-		child.kill().map_err(|e| e.to_string())?;
-		let _ = child.wait();
-	} else {
-		return Err("No agent was running".to_string());
-	}
-
-	Ok(())
-
+    Ok(())
 }

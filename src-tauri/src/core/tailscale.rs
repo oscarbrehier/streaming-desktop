@@ -1,8 +1,8 @@
+use dotenv::dotenv;
 use reqwest::Client;
 use serde::Deserialize;
-use tauri::AppHandle;
 use std::process::Command;
-use dotenv::dotenv;
+use tauri::AppHandle;
 
 #[derive(Debug, Deserialize)]
 pub struct TailscaleStatus {
@@ -92,30 +92,28 @@ pub fn tailscale_stop() -> Result<(), String> {
 }
 
 pub fn connect_to_network() -> Result<(), String> {
-
     let oauth_secret = std::env::var("TAILSCALE_CLIENT_SECRET").unwrap_or("".to_string());
     let auth_key_with_flags = format!("{}?ephemeral=false&preauthorized=true", oauth_secret);
 
-	let output = Command::new("tailscale")
-		.args([
-            "up", 
-            "--authkey", &auth_key_with_flags,
+    let output = Command::new("tailscale")
+        .args([
+            "up",
+            "--authkey",
+            &auth_key_with_flags,
             "--advertise-tags=tag:guest",
-            "--reset"
-            ])
-		.output()
-		.map_err(|e| e.to_string())?;
+            "--reset",
+        ])
+        .output()
+        .map_err(|e| e.to_string())?;
 
-	if !output.status.success() {
-		return Err("Failed to connect to VPS".to_string());
-	}
+    if !output.status.success() {
+        return Err("Failed to connect to VPS".to_string());
+    }
 
-	Ok(())
-
+    Ok(())
 }
 
 pub async fn check_vps_connection() -> bool {
-
     dotenv().ok();
 
     let base_path = std::env::var("STREAMING_APP_URL").unwrap_or("".to_string());
@@ -127,5 +125,4 @@ pub async fn check_vps_connection() -> bool {
         .await
         .map(|resp| resp.status().is_success())
         .unwrap_or(false)
-
 }
