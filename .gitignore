@@ -28,3 +28,9 @@ notes.txt
 .env
 
 updater.*
+
+src-tauri/resources/windows/*
+src-tauri/resources/macos/*
+src-tauri/resources/linux/*
+
+!src-tauri/resources/**/.gitkeep

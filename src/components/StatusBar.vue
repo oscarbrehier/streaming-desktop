@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cn } from "../utils/cn";
 import { useConnectionStore } from "../stores/connection";
 import StatusIndicator from "./StatusIndicator.vue";
 

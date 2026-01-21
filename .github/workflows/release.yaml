@@ -1,0 +1,57 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        settings:
+          - platform: 'macos-latest'
+            args: '--target aarch64-apple-darwin'
+            backend_artifact: 'streaming-scraper-macos-latest'
+            target_dir: 'resources/macos'
+          - platform: 'windows-latest'
+            args: '--target x86_64-pc-windows-msvc'
+            backend_artifact: 'streaming-scraper-windows-latest'
+            target_dir: 'resources/windows'
+
+    runs-on: ${{ matrix.settings.platform }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Backend Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.settings.backend_artifact }}
+          repository: 'oscarbrehier/streaming-scraper'
+          github-token: ${{ secrets.BACKEND_REPO_PAT }}
+          path: './src-tauri/${{ matrix.settings.target_dir }}'
+
+      - name: setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.settings.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: install dependencies
+        run: npm install
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+        with:
+          tagName: v__VERSION__
+          releaseName: 'App v__VERSION__'
+          releaseDraft: true
+          args: ${{ matrix.settings.args }}
