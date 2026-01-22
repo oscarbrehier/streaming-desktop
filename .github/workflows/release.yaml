@@ -31,10 +31,15 @@ jobs:
           GH_TOKEN: ${{ secrets.AGENT_REPO_PAT }}
         run: |
           mkdir -p ./src-tauri/${{ matrix.settings.target_dir }}
-          
+
           gh run download --repo oscarbrehier/streaming-scraper \
             --name "${{ matrix.settings.backend_artifact }}" \
-            --dir "./src-tauri/${{ matrix.settings.target_dir }}"
+            --dir "./temp_backend"
+
+          mv ./temp_backend/* ./src-tauri/${{ matrix.settings.target_dir }}/
+          rm -rf ./temp_backend
+
+          chmod +x ./src-tauri/${{ matrix.settings.target_dir }}/*
 
       - name: setup node
         uses: actions/setup-node@v4
@@ -45,6 +50,11 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.settings.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
 
       - name: install dependencies
         run: npm install

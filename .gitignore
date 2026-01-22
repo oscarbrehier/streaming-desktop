@@ -34,3 +34,5 @@ src-tauri/resources/macos/*
 src-tauri/resources/linux/*
 
 !src-tauri/resources/**/.gitkeep
+
+src-tauri/.cargo/config.toml
