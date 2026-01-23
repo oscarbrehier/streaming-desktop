@@ -43,7 +43,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEU0NTgyOTBERjFEMjNBNEMKUldSTU90THhEU2xZNU94VUZ1MDhyODJMZmhrc3BOSGY2TEZnRWVtbUgzLysyd0xmR2dpK2pjYXcKdW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDY0QzMyQ0ZDRkREN0I0MzcKUldRM3ROZjkvQ3pEWkRuc2NhSzhGaVUyZkt0Vk9nV3E3b1hBWGpYYXN2eVhUQzd1T2xZUWloekYK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEU0NTgyOTBERjFEMjNBNEMKUldSTU90THhEU2xZNU94VUZ1MDhyODJMZmhrc3BOSGY2TEZnRWVtbUgzLysyd0xmR2dpK2pjYXcKdW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDY0QzMyQ0ZDRkREN0I0MzcKUldRM3ROZjkvQ3pEWkRuc2NhSzhGaVUyZkt0Vk9nV3E3b1hBWGpYYXN2eVhUQzd1T2xZUWloekYKdW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDE1RDg1QkRGQjlDM0NEQzcKUldUSHpjTzUzMXZZRlF6Z29aMTN2YkVLSWRuVnVaV0RCL0FzaUxWdEdYUnhOUDYydkE4VUszaUgK",
       "endpoints": [
         "https://github.com/oscarbrehier/streaming-desktop/releases/latest/download/latest.json"
       ]
