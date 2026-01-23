@@ -36,10 +36,14 @@ jobs:
             --name "${{ matrix.settings.backend_artifact }}" \
             --dir "./temp_backend"
 
-          mv ./temp_backend/* ./src-tauri/${{ matrix.settings.target_dir }}/
-          rm -rf ./temp_backend
+          if [ "${{ matrix.settings.platform }}" = "windows-latest" ]; then
+            mv ./temp_backend/*.exe ./src-tauri/${{ matrix.settings.target_dir }}/agent.exe
+          else
+            mv ./temp_backend/* ./src-tauri/${{ matrix.settings.target_dir }}/agent
+            chmod +x ./src-tauri/${{ matrix.settings.target_dir }}/agent
+          fi
 
-          chmod +x ./src-tauri/${{ matrix.settings.target_dir }}/*
+          rm -rf ./temp_backend
 
       - name: setup node
         uses: actions/setup-node@v4
