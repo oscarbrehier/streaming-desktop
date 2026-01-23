@@ -50,7 +50,6 @@ pub fn install_tailscale(app: &AppHandle) -> Result<(), String> {
 }
 
 pub fn check_tailscale_installation() -> bool {
-    #[cfg(target_os = "windows")]
     let cmd = Command::new("tailscale").arg("version").output();
 
     cmd.is_ok() && cmd.unwrap().status.success()
@@ -90,27 +89,27 @@ pub fn tailscale_status() -> Result<TailscaleStatus, String> {
 //     Ok(())
 // }
 
-// pub fn connect_to_network() -> Result<(), String> {
-//     let oauth_secret = std::env::var("TAILSCALE_CLIENT_SECRET").unwrap_or("".to_string());
-//     let auth_key_with_flags = format!("{}?ephemeral=false&preauthorized=true", oauth_secret);
+pub fn connect_to_network() -> Result<(), String> {
+    let oauth_secret = std::env::var("TAILSCALE_CLIENT_SECRET").unwrap_or("".to_string());
+    let auth_key_with_flags = format!("{}?ephemeral=false&preauthorized=true", oauth_secret);
 
-//     let output = Command::new("tailscale")
-//         .args([
-//             "up",
-//             "--authkey",
-//             &auth_key_with_flags,
-//             "--advertise-tags=tag:guest",
-//             "--reset",
-//         ])
-//         .output()
-//         .map_err(|e| e.to_string())?;
+    let output = Command::new("tailscale")
+        .args([
+            "up",
+            "--authkey",
+            &auth_key_with_flags,
+            "--advertise-tags=tag:guest",
+            "--reset",
+        ])
+        .output()
+        .map_err(|e| e.to_string())?;
 
-//     if !output.status.success() {
-//         return Err("Failed to connect to VPS".to_string());
-//     }
+    if !output.status.success() {
+        return Err("Failed to connect to VPS".to_string());
+    }
 
-//     Ok(())
-// }
+    Ok(())
+}
 
 pub async fn check_vps_connection() -> bool {
     dotenv().ok();
