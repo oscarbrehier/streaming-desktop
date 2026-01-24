@@ -1,7 +1,7 @@
 use std::{process::Command, sync::Mutex};
 use tauri::{AppHandle, Manager};
 
-use crate::AppState;
+use crate::{AppState, utils::utils::create_hidden_command};
 
 pub fn spawn_agent(app: &AppHandle) -> Result<(), String> {
     #[cfg(target_os = "windows")]
@@ -34,7 +34,7 @@ pub fn spawn_agent(app: &AppHandle) -> Result<(), String> {
         }
     };
 
-    let child = Command::new(agent_path)
+    let child = create_hidden_command(agent_path)
         .spawn()
         .map_err(|e| e.to_string())?;
 

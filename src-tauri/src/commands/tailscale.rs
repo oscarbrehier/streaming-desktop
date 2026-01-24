@@ -1,6 +1,6 @@
 use crate::core::tailscale;
 use crate::utils::download::download_file;
-use std::process::Command;
+use crate::utils::utils::create_hidden_command;
 use tauri::{async_runtime, AppHandle};
 
 #[tauri::command]
@@ -14,7 +14,7 @@ pub async fn install_tailscale(app: AppHandle) -> Result<(), String> {
                 "Tailscale.pkg",
             )?;
 
-            Command::new("installer")
+            create_hidden_command("installer")
                 .args(["-pkg", pkg.to_str().unwrap(), "-target", "/"])
                 .status()
                 .map_err(|e| e.to_string())?;
@@ -28,7 +28,7 @@ pub async fn install_tailscale(app: AppHandle) -> Result<(), String> {
                 "tailscale-setup.exe",
             )?;
 
-            Command::new(exe)
+            create_hidden_command(exe)
                 .args(["/quiet"])
                 .status()
                 .map_err(|e| e.to_string())?;

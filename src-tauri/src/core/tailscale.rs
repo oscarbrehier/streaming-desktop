@@ -2,8 +2,8 @@ use crate::utils::download::download_file;
 use dotenv::dotenv;
 use reqwest::Client;
 use serde::Deserialize;
-use std::process::Command;
 use tauri::AppHandle;
+use crate::utils::utils::create_hidden_command;
 
 #[derive(Debug, Deserialize)]
 pub struct TailscaleStatus {
@@ -20,13 +20,14 @@ impl TailscaleStatus {
 pub fn install_tailscale(app: &AppHandle) -> Result<(), String> {
     #[cfg(target_os = "macos")]
     {
+
         let pkg = download_file(
             &app,
             "https://pkgs.tailscale.com/stable/Tailscale-latest-macos.pkg",
             "Tailscale.pkg",
         )?;
 
-        Command::new("installer")
+        create_hidden_command("installer")
             .args(["-pkg", pkg.to_str().unwrap(), "-target", "/"])
             .status()
             .map_err(|e| e.to_string())?;
@@ -40,7 +41,7 @@ pub fn install_tailscale(app: &AppHandle) -> Result<(), String> {
             "tailscale-setup.exe",
         )?;
 
-        Command::new(exe)
+        create_hidden_command(exe)
             .args(["/quiet"])
             .status()
             .map_err(|e| e.to_string())?;
@@ -50,13 +51,13 @@ pub fn install_tailscale(app: &AppHandle) -> Result<(), String> {
 }
 
 pub fn check_tailscale_installation() -> bool {
-    let cmd = Command::new("tailscale").arg("version").output();
+    let cmd = create_hidden_command("tailscale").arg("version").output();
 
     cmd.is_ok() && cmd.unwrap().status.success()
 }
 
 pub fn tailscale_status() -> Result<TailscaleStatus, String> {
-    let output = Command::new("tailscale")
+    let output = create_hidden_command("tailscale")
         .args(["status", "--json"])
         .output()
         .map_err(|e| e.to_string())?;
@@ -93,7 +94,7 @@ pub fn connect_to_network() -> Result<(), String> {
     let oauth_secret = std::env::var("TAILSCALE_CLIENT_SECRET").unwrap_or("".to_string());
     let auth_key_with_flags = format!("{}?ephemeral=false&preauthorized=true", oauth_secret);
 
-    let output = Command::new("tailscale")
+    let output = create_hidden_command("tailscale")
         .args([
             "up",
             "--authkey",

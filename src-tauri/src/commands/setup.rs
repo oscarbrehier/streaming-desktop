@@ -2,8 +2,8 @@ use crate::core::{
     agent::spawn_agent,
     tailscale::{check_tailscale_installation, connect_to_network, install_tailscale},
 };
+use crate::utils::utils::create_hidden_command;
 use serde::{Deserialize, Serialize};
-use std::process::Command;
 use tauri::{async_runtime, AppHandle, Emitter, Window};
 
 #[derive(Clone, Serialize, Deserialize)]
@@ -120,7 +120,7 @@ pub async fn setup_environment(app: AppHandle) -> Result<(), String> {
     let _ = async_runtime::spawn_blocking(move || -> Result<(), String> {
         #[cfg(any(target_os = "macos", target_os = "windows"))]
         {
-            Command::new("tailscale")
+            create_hidden_command("tailscale")
                 .arg("up")
                 .status()
                 .map_err(|e| e.to_string())?;
