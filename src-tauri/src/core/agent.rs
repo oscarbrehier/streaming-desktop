@@ -34,7 +34,12 @@ pub fn spawn_agent(app: &AppHandle) -> Result<(), String> {
         }
     };
 
+    let data_dir = app.path().app_local_data_dir().map_err(|e| e.to_string())?;
+
+    std::fs::create_dir_all(&data_dir).map_err(|e| e.to_string())?;
+
     let child = create_hidden_command(agent_path)
+        .current_dir(data_dir)
         .spawn()
         .map_err(|e| e.to_string())?;
 
